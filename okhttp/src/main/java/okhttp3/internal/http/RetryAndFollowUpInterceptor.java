@@ -59,6 +59,7 @@ import static okhttp3.internal.http.StatusLine.HTTP_TEMP_REDIRECT;
  */
 public final class RetryAndFollowUpInterceptor implements Interceptor {
     /**
+     * 最多可重连20次
      * How many redirects and auth challenges should we attempt? Chrome follows 21 redirects; Firefox,
      * curl, and wget follow 20; Safari follows 16; and HTTP/1.0 recommends 5.
      */
@@ -88,6 +89,7 @@ public final class RetryAndFollowUpInterceptor implements Interceptor {
             Response response;
             boolean success = false;
             try {
+                // 等待后续陆续返回，response
                 response = realChain.proceed(request, transmitter, null);
                 success = true;
             } catch (RouteException e) {

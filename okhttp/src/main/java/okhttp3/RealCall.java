@@ -75,6 +75,7 @@ final class RealCall implements Call {
 
     @Override
     public Response execute() throws IOException {
+        //每一个call 都只允许执行一次
         synchronized (this) {
             if (executed) throw new IllegalStateException("Already Executed");
             executed = true;
@@ -91,6 +92,7 @@ final class RealCall implements Call {
 
     @Override
     public void enqueue(Callback responseCallback) {
+        // 只能执行一次
         synchronized (this) {
             if (executed) throw new IllegalStateException("Already Executed");
             executed = true;
@@ -184,6 +186,7 @@ final class RealCall implements Call {
             try {
                 Response response = getResponseWithInterceptorChain();
                 signalledCallback = true;
+                // 回调到 调用界面
                 responseCallback.onResponse(RealCall.this, response);
             } catch (IOException e) {
                 if (signalledCallback) {
